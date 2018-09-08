@@ -104,13 +104,14 @@ namespace RestAPICollectionApp.Controllers
 
                 foreach (var field in parsedFields)
                 {
+                    var fieldCapitalized = field.First().ToString().ToUpper() + field.Substring(1);
                     var propValue = (
                                 from prop in props
-                                where prop.Name == field
+                                where prop.Name == fieldCapitalized
                                 select prop.GetValue(collection, null)
                                 );
 
-                    ((IDictionary<string, object>)obj).Add(field, propValue.FirstOrDefault());
+                    ((IDictionary<string, object>)obj).Add(fieldCapitalized, propValue.FirstOrDefault());
                 }
 
                 selectQuery.Add(obj);
