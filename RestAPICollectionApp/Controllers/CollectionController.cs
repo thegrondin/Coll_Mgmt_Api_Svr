@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Description;
 using RestAPICollectionApp.Models;
@@ -79,7 +81,39 @@ namespace RestAPICollectionApp.Controllers
         }
 
         // GET: api/Collection
-        public IEnumerable<object> GetCollections() => Collections;
+        public dynamic GetCollections([FromUri] string fields = "")
+        {
+            // fields pourraient etre : Name, Description, Value; ou juste Name par exemple.
+
+            List<string> parsedFields = fields.Split(',').ToList();
+
+            List<object> selectQuery = new List<object>();
+
+            IEnumerable<CollectionModel> collections = db.Collections.AsEnumerable();
+
+            foreach (var collection in collections)
+            {
+                PropertyInfo[] props = collection.GetType().GetProperties();
+
+                object obj = new ExpandoObject();
+
+                foreach (var field in parsedFields)
+                {
+                    var propValue = (
+                                from prop in props
+                                where prop.Name == field
+                                select prop.GetValue(collection, null)
+                                );
+
+                    ((IDictionary<string, object>)obj).Add(field, propValue.FirstOrDefault());
+                }
+
+                selectQuery.Add(obj);
+
+            }
+
+            return selectQuery;
+        }
 
         // GET: api/Collection/5
         [ResponseType(typeof(CollectionModel))]
