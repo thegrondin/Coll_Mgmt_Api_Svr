@@ -85,6 +85,11 @@ namespace RestAPICollectionApp.Controllers
         {
             // fields pourraient etre : Name, Description, Value; ou juste Name par exemple.
 
+            if (fields == "")
+            {
+                return Collections;
+            }
+
             List<string> parsedFields = fields.Split(',').ToList();
 
             List<object> selectQuery = new List<object>();
