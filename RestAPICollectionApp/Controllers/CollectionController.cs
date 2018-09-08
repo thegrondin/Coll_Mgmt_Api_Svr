@@ -24,24 +24,48 @@ namespace RestAPICollectionApp.Controllers
                 new { i.CollectionModelId, i.Name, i.Description, i.Items }).ToList();
         }
 
-        // GET: api/Collection
-        public IEnumerable<object> GetCollections()
-        {
-           //var co = Collections.ElementAt(0) as CollectionModel;
-           // System.Diagnostics.Debug.WriteLine(co.Name);
-            return Collections;   
-
-        }
-
         [Route("api/collection/{collectionId}/Items")]
         public IQueryable<Item> GetItemsFromCollection(int collectionId)
         {
-            //IQueryable<Item> items = db.Items.Where(x => x.CollectionId == collectionId);
-
-            return db.Items;
-
-            
+            return db.Items.Where(x => x.CollectionModelId == collectionId);
         }
+
+        [Route("api/collection/{collectionId}/Item/{itemId}")]
+        public IHttpActionResult GetItem(int collectionId, int itemId)
+        {
+            Item selectedItem = db.Items.Where(x => x.CollectionModelId == collectionId).Where(y => y.ItemId == itemId).FirstOrDefault();
+
+            if (selectedItem == null)
+                return NotFound();
+
+            return Ok(selectedItem);
+        }
+
+        [Route("api/collection/{collectionId}/Items")]
+        public IHttpActionResult PostItem(int collectionId, Item item)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            item.CollectionModelId = collectionId;
+
+            db.Items.Add(item);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = item.CollectionModelId }, item);
+        }
+
+
+
+        // GET: api/Collection
+        public IEnumerable<object> GetCollections()
+        {
+            return Collections;   
+        }
+
 
         // GET: api/Collection/5
         [ResponseType(typeof(CollectionModel))]

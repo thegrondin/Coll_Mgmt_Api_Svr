@@ -7,13 +7,13 @@ namespace RestAPICollectionApp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Initial : IMigrationMetadata
+    public sealed partial class AddingReferencetoCollInItem : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddingReferencetoCollInItem));
         
         string IMigrationMetadata.Id
         {
-            get { return "201809071727589_Initial"; }
+            get { return "201809072301566_AddingReferencetoCollInItem"; }
         }
         
         string IMigrationMetadata.Source
