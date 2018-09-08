@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using RestAPICollectionApp.Models;
@@ -24,23 +23,28 @@ namespace RestAPICollectionApp.Controllers
                 new { i.CollectionModelId, i.Name, i.Description, i.Items }).ToList();
         }
 
+        // GET: api/collection/3/Items
         [Route("api/collection/{collectionId}/Items")]
         public IQueryable<Item> GetItemsFromCollection(int collectionId)
         {
             return db.Items.Where(x => x.CollectionModelId == collectionId);
         }
 
-        [Route("api/collection/{collectionId}/Item/{itemId}")]
+        // GET: api/collection/4/items/34
+        [Route("api/collection/{collectionId}/Items/{itemId}")]
         public IHttpActionResult GetItem(int collectionId, int itemId)
         {
             Item selectedItem = db.Items.Where(x => x.CollectionModelId == collectionId).Where(y => y.ItemId == itemId).FirstOrDefault();
 
             if (selectedItem == null)
+            {
                 return NotFound();
+            }
 
             return Ok(selectedItem);
         }
 
+        // POST: api/collection/4/items
         [Route("api/collection/{collectionId}/Items")]
         public IHttpActionResult PostItem(int collectionId, Item item)
         {
@@ -58,14 +62,24 @@ namespace RestAPICollectionApp.Controllers
             return CreatedAtRoute("DefaultApi", new { id = item.CollectionModelId }, item);
         }
 
-
-
-        // GET: api/Collection
-        public IEnumerable<object> GetCollections()
+        // DELETE: api/collection/4/items
+        [Route("api/collection/{collectionId}/Items/{itemId}")]
+        public IHttpActionResult DeleteItem(int collectionId, int itemId)
         {
-            return Collections;   
+            Item item = db.Items.Find(itemId);
+
+            if (item == null)
+                return NotFound();
+            
+
+            db.Items.Remove(item);
+            db.SaveChanges();
+
+            return Ok(item);
         }
 
+        // GET: api/Collection
+        public IEnumerable<object> GetCollections() => Collections;
 
         // GET: api/Collection/5
         [ResponseType(typeof(CollectionModel))]
@@ -153,6 +167,11 @@ namespace RestAPICollectionApp.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private bool ItemExists(int id)
+        {
+            return db.Items.Count(e => e.ItemId == id) > 0;
         }
 
         private bool CollectionModelExists(int id)
