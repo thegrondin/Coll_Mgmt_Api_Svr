@@ -72,7 +72,6 @@ namespace RestAPICollectionApp.Controllers
 
             if (item == null)
                 return NotFound();
-            
 
             db.Items.Remove(item);
             db.SaveChanges();
@@ -80,15 +79,16 @@ namespace RestAPICollectionApp.Controllers
             return Ok(item);
         }
 
+        public IEnumerable<object> GetCollections()
+        {
+            return Collections;
+        }
+
+
         // GET: api/Collection
         public dynamic GetCollections([FromUri] string fields = "")
         {
             // fields pourraient etre : Name, Description, Value; ou juste Name par exemple.
-
-            if (fields == "")
-            {
-                return Collections;
-            }
 
             List<string> parsedFields = fields.Split(',').ToList();
 
@@ -96,11 +96,14 @@ namespace RestAPICollectionApp.Controllers
 
             IEnumerable<CollectionModel> collections = db.Collections.AsEnumerable();
 
+            PropertyInfo[] props;
+            object obj;
+
             foreach (var collection in collections)
             {
-                PropertyInfo[] props = collection.GetType().GetProperties();
+                props = collection.GetType().GetProperties();
 
-                object obj = new ExpandoObject();
+                obj = new ExpandoObject();
 
                 foreach (var field in parsedFields)
                 {
