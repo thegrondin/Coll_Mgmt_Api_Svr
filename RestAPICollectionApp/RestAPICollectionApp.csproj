@@ -192,6 +192,7 @@
     <Compile Include="Controllers\CollectionContext.cs" />
     <Compile Include="Controllers\CollectionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LINQExtentions.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -302,6 +303,12 @@
     <EmbeddedResource Include="Migrations\201809072301566_AddingReferencetoCollInItem.resx">
       <DependentUpon>201809072301566_AddingReferencetoCollInItem.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helpers\Helpers.csproj">
+      <Project>{969F4B5B-C823-44EA-B737-431E3ADDB2FF}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

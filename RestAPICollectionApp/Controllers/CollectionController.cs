@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Helpers;
 using RestAPICollectionApp.Models;
 
 namespace RestAPICollectionApp.Controllers
@@ -88,40 +89,7 @@ namespace RestAPICollectionApp.Controllers
         // GET: api/Collection
         public dynamic GetCollections([FromUri] string fields = "")
         {
-            // fields pourraient etre : Name, Description, Value; ou juste Name par exemple.
-
-            List<string> parsedFields = fields.Split(',').ToList();
-
-            List<object> selectQuery = new List<object>();
-
-            IEnumerable<CollectionModel> collections = db.Collections.AsEnumerable();
-
-            PropertyInfo[] props;
-            object obj;
-
-            foreach (var collection in collections)
-            {
-                props = collection.GetType().GetProperties();
-
-                obj = new ExpandoObject();
-
-                foreach (var field in parsedFields)
-                {
-                    var fieldCapitalized = field.First().ToString().ToUpper() + field.Substring(1);
-                    var propValue = (
-                                from prop in props
-                                where prop.Name == fieldCapitalized
-                                select prop.GetValue(collection, null)
-                                );
-
-                    ((IDictionary<string, object>)obj).Add(fieldCapitalized, propValue.FirstOrDefault());
-                }
-
-                selectQuery.Add(obj);
-
-            }
-
-            return selectQuery;
+            return db.Collections.AsEnumerable().GetFieldsFromObjectList(fields);
         }
 
         // GET: api/Collection/5
