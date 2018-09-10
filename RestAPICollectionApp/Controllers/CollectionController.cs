@@ -33,6 +33,12 @@ namespace RestAPICollectionApp.Controllers
             return db.Items.Where(x => x.CollectionModelId == collectionId);
         }
 
+        [Route("api/collection/{collectionId}/Items")]
+        public dynamic GetItemsFromCollection(int collectionId, [FromUri] string fields)
+        {
+            return db.Items.Where(x => x.CollectionModelId == collectionId).AsEnumerable().GetFieldsFromObjectList(fields);
+        }
+
         // GET: api/collection/4/items/34
         [Route("api/collection/{collectionId}/Items/{itemId}")]
         public IHttpActionResult GetItem(int collectionId, int itemId)
@@ -45,6 +51,17 @@ namespace RestAPICollectionApp.Controllers
             }
 
             return Ok(selectedItem);
+        }
+
+        [Route("api/collection/{collectionId}/Items/{ItemId}")]
+        public IHttpActionResult GetItem(int collectionId, int itemId, [FromUri] string fields)
+        {
+            Item selecteddItem = db.Items.Where(x => x.CollectionModelId == collectionId).Where(y => y.ItemId == itemId).FirstOrDefault();
+
+            if (selecteddItem == null)
+                return NotFound();
+
+            return Ok(selecteddItem.GetFieldsFromModel(fields));
         }
 
         // POST: api/collection/4/items
@@ -87,7 +104,7 @@ namespace RestAPICollectionApp.Controllers
 
 
         // GET: api/Collection
-        public dynamic GetCollections([FromUri] string fields = "")
+        public dynamic GetCollections([FromUri] string fields)
         {
             return db.Collections.AsEnumerable().GetFieldsFromObjectList(fields);
         }
@@ -103,6 +120,15 @@ namespace RestAPICollectionApp.Controllers
             }
 
             return Ok(collectionModel);
+        }
+
+        public IHttpActionResult GetCollectionModel(int id, [FromUri] string fields)
+        {
+            CollectionModel collectionModel = db.Collections.Find(id);
+            if (collectionModel == null)
+                return NotFound();
+
+            return Ok(collectionModel.GetFieldsFromModel(fields));
         }
 
         // PUT: api/Collection/5
