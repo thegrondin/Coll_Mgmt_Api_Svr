@@ -42,6 +42,21 @@ namespace Helpers
 
         }
 
+        public static dynamic GetFieldsFromModel (this object model, string fields)
+        {
+            List<string> parsedFields = fields.Split(',').ToList();
+            PropertyInfo[] props = model.GetType().GetProperties();
 
+            var obj = new ExpandoObject() as IDictionary<string, Object>;
+
+            foreach (var field in parsedFields)
+            {
+                var prop = props.Where(x => x.Name == field).FirstOrDefault();
+                obj.Add(prop.Name, prop.GetValue(model, null));
+            }
+
+            return obj;
+            
+        }
     }
 }
