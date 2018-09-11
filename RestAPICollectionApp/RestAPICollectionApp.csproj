@@ -196,13 +196,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809072204357_Initial.cs" />
-    <Compile Include="Migrations\201809072204357_Initial.Designer.cs">
-      <DependentUpon>201809072204357_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809072301566_AddingReferencetoCollInItem.cs" />
-    <Compile Include="Migrations\201809072301566_AddingReferencetoCollInItem.Designer.cs">
-      <DependentUpon>201809072301566_AddingReferencetoCollInItem.cs</DependentUpon>
+    <Compile Include="Migrations\201809102121117_Initial.cs" />
+    <Compile Include="Migrations\201809102121117_Initial.Designer.cs">
+      <DependentUpon>201809102121117_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CollectionModel.cs" />
@@ -296,18 +292,15 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201809072204357_Initial.resx">
-      <DependentUpon>201809072204357_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809072301566_AddingReferencetoCollInItem.resx">
-      <DependentUpon>201809072301566_AddingReferencetoCollInItem.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Helpers\Helpers.csproj">
       <Project>{969F4B5B-C823-44EA-B737-431E3ADDB2FF}</Project>
       <Name>Helpers</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201809102121117_Initial.resx">
+      <DependentUpon>201809102121117_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

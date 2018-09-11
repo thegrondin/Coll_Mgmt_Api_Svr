@@ -24,18 +24,18 @@ namespace RestAPICollectionApp.Migrations
                         ItemId = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         Description = c.String(),
-                        CollectionModel_CollectionModelId = c.Int(),
+                        CollectionModelId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ItemId)
-                .ForeignKey("dbo.CollectionModels", t => t.CollectionModel_CollectionModelId)
-                .Index(t => t.CollectionModel_CollectionModelId);
+                .ForeignKey("dbo.CollectionModels", t => t.CollectionModelId, cascadeDelete: true)
+                .Index(t => t.CollectionModelId);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Items", "CollectionModel_CollectionModelId", "dbo.CollectionModels");
-            DropIndex("dbo.Items", new[] { "CollectionModel_CollectionModelId" });
+            DropForeignKey("dbo.Items", "CollectionModelId", "dbo.CollectionModels");
+            DropIndex("dbo.Items", new[] { "CollectionModelId" });
             DropTable("dbo.Items");
             DropTable("dbo.CollectionModels");
         }

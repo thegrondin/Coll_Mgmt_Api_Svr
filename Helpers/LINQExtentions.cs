@@ -12,7 +12,7 @@ namespace Helpers
     {
         public static IEnumerable<object> GetFieldsFromObjectList(this IEnumerable<object> list, string fields)
         {
-            IEnumerable<string> parsedFields = fields.Split(',').AsEnumerable();
+            List<string> parsedFields = fields.Split(',').ToList();
             List<object> selectQuery = new List<object>();
 
             PropertyInfo[] props;
@@ -20,7 +20,7 @@ namespace Helpers
 
             foreach (var item in list)
             {
-                props = list.GetType().GetProperties();
+                props = item.GetType().GetProperties();
                 obj = new ExpandoObject();
 
                 foreach (var field in parsedFields)
@@ -29,7 +29,7 @@ namespace Helpers
                     var propValue = (
                                 from prop in props
                                 where prop.Name == fieldCapitalized
-                                select prop.GetValue(list, null)
+                                select prop.GetValue(item, null)
                         );
 
                     ((IDictionary<string, object>)obj).Add(fieldCapitalized, propValue.FirstOrDefault());
@@ -60,3 +60,26 @@ namespace Helpers
         }
     }
 }
+
+
+
+/*
+ * 
+ * 
+ * 
+ * 
+ * List<string> parsedFields = fields.Split(',').ToList();
+        PropertyInfo[] propertyInfos = list.First().GetType().GetProperties(); 
+
+        IDictionary<string, Object> obj = new ExpandoObject() as IDictionary<string, Object>;
+        var selectedProps = new List<object>();
+
+
+        for(var i = 0; i < list.Count(); i++)
+        {
+            obj.Add()
+            selectedProps.Add(obj);
+        }
+        //selectedProps = parsedFields.Where(f => propsList.Where(pi => pi.ToList().ForEach(p => p.Name == f))); //f = Name, p = prop prop.Name = "Name"
+
+*/
