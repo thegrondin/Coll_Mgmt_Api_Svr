@@ -12,6 +12,7 @@ namespace Helpers
     {
         public static IEnumerable<object> GetFieldsFromObjectList(this IEnumerable<object> list, string fields)
         {
+            // Optimization et refactoring a faire...
             List<string> parsedFields = fields.Split(',').ToList();
             List<object> selectQuery = new List<object>();
 
@@ -60,26 +61,3 @@ namespace Helpers
         }
     }
 }
-
-
-
-/*
- * 
- * 
- * 
- * 
- * List<string> parsedFields = fields.Split(',').ToList();
-        PropertyInfo[] propertyInfos = list.First().GetType().GetProperties(); 
-
-        IDictionary<string, Object> obj = new ExpandoObject() as IDictionary<string, Object>;
-        var selectedProps = new List<object>();
-
-
-        for(var i = 0; i < list.Count(); i++)
-        {
-            obj.Add()
-            selectedProps.Add(obj);
-        }
-        //selectedProps = parsedFields.Where(f => propsList.Where(pi => pi.ToList().ForEach(p => p.Name == f))); //f = Name, p = prop prop.Name = "Name"
-
-*/
