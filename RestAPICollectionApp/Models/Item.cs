@@ -8,7 +8,6 @@ namespace RestAPICollectionApp.Models
         public int ItemId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
         public int CollectionModelId { get; set; }
 
     }
